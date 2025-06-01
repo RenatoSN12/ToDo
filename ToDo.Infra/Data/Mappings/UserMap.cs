@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ToDo.Domain.Entities;
 
-namespace ToDo.Api.Data.Mappings;
+namespace ToDo.Infra.Data.Mappings;
 
 public class UserMap : IEntityTypeConfiguration<User>
 {

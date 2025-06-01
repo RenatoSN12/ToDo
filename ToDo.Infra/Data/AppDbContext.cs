@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ToDo.Domain.Entities;
 
-namespace ToDo.Api.Data;
+namespace ToDo.Infra.Data;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {

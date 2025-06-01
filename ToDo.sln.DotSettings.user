@@ -1,0 +1,14 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AAssert_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003FUsers_003Fjuver_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FDecompilerCache_003Fdecompiler_003Fbfa965bf7fea4f88a98313899039abb043a28_003F86_003F50931da8_003FAssert_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=67fe6450_002Debdd_002D481a_002D93ce_002D491adf9ac586/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Complete_Should_Catch_Error_When_Task_Is_Already_Completed" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;MSTest::F1AD8909-B482-4735-8E1E-FCED87378FEB::net9.0::ToDo.Tests.Domain.TodoItemTests.Complete_Should_Catch_Error_When_Task_Is_Already_Completed&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::F1AD8909-B482-4735-8E1E-FCED87378FEB::net9.0::ToDo.Tests.Domain.TodoItemTests.Should_Not_Change_Task_Description_When_Task_Is_Completed&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b5363621_002D8438_002D4984_002D83c7_002D3e0b4079ced7/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Should_Not_Change_Task_Description_When_Task_Is_Completed" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;MSTest::F1AD8909-B482-4735-8E1E-FCED87378FEB::net9.0::ToDo.Tests.Domain.TodoItemTests.Should_Not_Change_Task_Description_When_Task_Is_Completed&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::F1AD8909-B482-4735-8E1E-FCED87378FEB::net9.0::ToDo.Tests.Domain.TodoItemTests.Should_Change_Title_With_Success&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ToDo.Domain.Entities;
 
-namespace ToDo.Api.Data.Mappings;
+namespace ToDo.Infra.Data.Mappings;
 
 public class TodoItemMap : IEntityTypeConfiguration<TodoItem>
 {
@@ -30,7 +30,7 @@ public class TodoItemMap : IEntityTypeConfiguration<TodoItem>
             .IsRequired()
             .HasColumnType("timestamp without time zone");
         
-        builder.Property(x=> x.ExecutionDate)
+        builder.Property(x=> x.DueDate)
             .IsRequired()
             .HasColumnType("timestamp without time zone");
         
@@ -46,7 +46,7 @@ public class TodoItemMap : IEntityTypeConfiguration<TodoItem>
         // Indexes
 
         builder.HasIndex(x => x.UserId);
-        builder.HasIndex(x => x.ExecutionDate);
-        builder.HasIndex(x => new { x.UserId, x.ExecutionDate });
+        builder.HasIndex(x => x.DueDate);
+        builder.HasIndex(x => new { x.UserId, x.DueDate });
     }
 }
