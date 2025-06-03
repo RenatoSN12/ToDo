@@ -1,13 +1,31 @@
-using Microsoft.EntityFrameworkCore;
-using ToDo.Infra.Data;
+using ToDo.Api.Extensions;
+using ToDo.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(connectionString));
+builder.AddConfiguration();
+
+builder.Services.AddDbContext();
+
+builder.Services.AddControllers();
+
+builder.Services.AddDocumentation();
+
+builder.Services.AddValidators();
+
+builder.Services.AddHandlers();
+
+builder.Services.AddInfra();
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+    app.ConfigureDevEnvironment();
+
+app.UseHttpsRedirection();
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.MapGet("/", () => "Hello World!");
 

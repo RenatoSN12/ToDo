@@ -24,15 +24,15 @@ public class TodoItemMap : IEntityTypeConfiguration<TodoItem>
 
         builder.Property(x => x.CompletedAt)
             .IsRequired(false)
-            .HasColumnType("timestamp without time zone");
+            .HasColumnType("timestamp with time zone");
         
         builder.Property(x => x.CreatedAt)
             .IsRequired()
-            .HasColumnType("timestamp without time zone");
+            .HasColumnType("timestamp with time zone");
         
         builder.Property(x=> x.DueDate)
             .IsRequired()
-            .HasColumnType("timestamp without time zone");
+            .HasColumnType("date");
         
         builder.Property(x=> x.IsCompleted)
             .IsRequired()

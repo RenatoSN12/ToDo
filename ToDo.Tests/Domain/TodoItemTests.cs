@@ -1,3 +1,4 @@
+using ToDo.Domain.Common.Extensions;
 using ToDo.Domain.Entities;
 
 namespace ToDo.Tests.Domain;
@@ -5,7 +6,8 @@ namespace ToDo.Tests.Domain;
 [TestClass]
 public class TodoItemTests
 {
-    private static TodoItem CreateValidTask() => new("emailteste@gmail.com", "titulo-teste", DateTime.Now.AddDays(5), "Descrição da Task");
+    private static TodoItem CreateValidTask() 
+        => new("emailteste@gmail.com", "titulo-teste", DateTime.Now.AddDays(5).ToDateOnly(), "Descrição da Task");
     
     [TestMethod]
     [TestCategory("Domain")]
@@ -97,7 +99,7 @@ public class TodoItemTests
         var task = CreateValidTask();
         task.Complete();
         
-        var dueDate = DateTime.Now.AddDays(10);
+        var dueDate = DateTime.Now.AddDays(10).ToDateOnly();
         
         task.ChangeDueDate(dueDate);
         Assert.IsFalse(task.IsValid);
@@ -109,7 +111,7 @@ public class TodoItemTests
     public void Should_Not_Change_Task_Due_Date_When_It_Is_The_Past()
     {
         var task = CreateValidTask();
-        var dueDate = DateTime.Now.AddDays(-1);
+        var dueDate = DateTime.Now.AddDays(-1).ToDateOnly();
         
         task.ChangeDueDate(dueDate);
         Assert.IsFalse(task.IsValid);
@@ -122,7 +124,7 @@ public class TodoItemTests
     {
         var task = CreateValidTask();
 
-        var dueDate = DateTime.Now.AddDays(7);
+        var dueDate = DateTime.Now.AddDays(7).ToDateOnly();
         
         task.ChangeDueDate(dueDate);
         

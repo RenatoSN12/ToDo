@@ -3,15 +3,18 @@ using ToDo.Application.UseCases.Commands;
 using ToDo.Application.UseCases.Commands.TodoItems;
 using ToDo.Application.UseCases.Validators;
 using ToDo.Domain.Commands;
-using ToDo.Domain.Entities;
+using ToDo.Domain.Data;
+using ToDo.Domain.Data.Repositories;
 using ToDo.Domain.Handlers;
-using ToDo.Infra.Repositories;
 
 namespace ToDo.Application.UseCases.Handlers.TodoItems;
 
-public class CreateTodoItemHandler(CreateTodoItemsValidator validator, TodoItemRepository repository) : IHandler<CreateTodoItemsCommand>
+public class CreateTodoItemHandler(
+    CreateTodoItemsValidator validator,
+    ITodoItemRepository repository,
+    IUnitOfWork unitOfWork) : IHandler<CreateTodoItemCommand>
 {
-    public async Task<ICommandResult> Handle(CreateTodoItemsCommand command)
+    public async Task<ICommandResult> Handle(CreateTodoItemCommand command)
     {
         var result = await validator.ValidateAsync(command);
 
@@ -22,8 +25,12 @@ public class CreateTodoItemHandler(CreateTodoItemsValidator validator, TodoItemR
         }
         
         var todoItem = command.ToEntity();
-        return !todoItem.IsValid ?
-            new CommandResult(false, string.Join(';', todoItem.Notifications), null) :
-            new CommandResult(true, "Tarefa cadastrada com sucesso!", todoItem.ToDto());
+        if (!todoItem.IsValid)
+            return new CommandResult(false, string.Join(';', todoItem.Notifications), null);
+
+        await repository.AddAsync(todoItem);
+        await unitOfWork.CommitAsync();
+        
+        return new CommandResult(true, "Tarefa cadastrada com sucesso!", todoItem.ToDto());
     }
 }

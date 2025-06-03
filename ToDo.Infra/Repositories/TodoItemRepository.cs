@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using ToDo.Domain.Data.Repositories;
 using ToDo.Domain.Entities;
-using ToDo.Domain.Repositories;
 using ToDo.Infra.Data;
 
 namespace ToDo.Infra.Repositories;

@@ -3,7 +3,7 @@ using ToDo.Application.UseCases.Commands.TodoItems;
 
 namespace ToDo.Application.UseCases.Validators;
 
-public class CreateTodoItemsValidator : AbstractValidator<CreateTodoItemsCommand>
+public class CreateTodoItemsValidator : AbstractValidator<CreateTodoItemCommand>
 {
     public CreateTodoItemsValidator()
     {

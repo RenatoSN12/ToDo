@@ -1,6 +1,6 @@
 using ToDo.Domain.Entities;
 
-namespace ToDo.Domain.Repositories;
+namespace ToDo.Domain.Data.Repositories;
 
 public interface ITodoItemRepository
 {
