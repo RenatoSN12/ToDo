@@ -1,7 +1,7 @@
 using FluentValidation;
 using ToDo.Application.UseCases.Commands.TodoItems;
 
-namespace ToDo.Application.UseCases.Validators;
+namespace ToDo.Application.UseCases.Validators.TodoItems;
 
 public class CreateTodoItemsValidator : AbstractValidator<CreateTodoItemCommand>
 {

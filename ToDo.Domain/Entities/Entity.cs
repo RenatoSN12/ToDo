@@ -10,6 +10,6 @@ public abstract class Entity : Notifiable
         CreatedAt = DateTime.UtcNow;
     }
     
-    public Guid Id { get; private set; }
-    public DateTime CreatedAt { get; private set; }
+    public Guid Id { get; }
+    public DateTime CreatedAt { get; }
 }

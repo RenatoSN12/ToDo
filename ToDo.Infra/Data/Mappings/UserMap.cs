@@ -12,21 +12,26 @@ public class UserMap : IEntityTypeConfiguration<User>
         
         builder.HasKey(x => x.Id);
         
-        builder.Property(x => x.Username)
-            .HasMaxLength(30)
-            .HasColumnType("VARCHAR")
+        builder.Property(x => x.Name)
+            .HasColumnType("TEXT")
+            .HasMaxLength(120)
             .IsRequired();
 
+        builder.Property(x => x.Email)
+            .HasColumnType("VARCHAR")
+            .HasMaxLength(80)
+            .IsRequired();
+        
         builder.Property(x => x.PasswordHash)
             .HasMaxLength(200)
             .IsRequired();
         
         builder.Property(x=> x.CreatedAt)
-            .HasColumnType("timestamp without time zone")
+            .HasColumnType("timestamp with time zone")
             .IsRequired();
         
         // Indexes
 
-        builder.HasIndex(x => x.Username);
+        builder.HasIndex(x => x.Email);
     }
 }

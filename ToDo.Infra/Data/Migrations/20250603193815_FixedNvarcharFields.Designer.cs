@@ -12,8 +12,8 @@ using ToDo.Infra.Data;
 namespace ToDo.Infra.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250602192424_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250603193815_FixedNvarcharFields")]
+    partial class FixedNvarcharFields
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,21 +75,26 @@ namespace ToDo.Infra.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("VARCHAR");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("VARCHAR");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("Username");
+                    b.HasIndex("Email");
 
                     b.ToTable("Users", (string)null);
                 });

@@ -7,11 +7,11 @@ namespace ToDo.Infra.Repositories;
 
 public class TodoItemRepository(AppDbContext context) : ITodoItemRepository
 {
-    public async Task<TodoItem?> GetByIdAsync(Guid id)
-        => await context.Tasks.FindAsync(id);
+    public async Task<TodoItem?> GetByIdAsync(Guid id, string userId)
+        => await context.Tasks.FirstOrDefaultAsync(x => x.Id == id && x.UserId == userId);
 
-    public async Task<IEnumerable<TodoItem>> GetAllByUserAsync(string userId)
-        => await context.Tasks.AsNoTracking().Where(t => t.UserId == userId).ToListAsync();
+    public async Task<IEnumerable<TodoItem>> GetAllByDate(string userId, DateOnly date)
+        => await context.Tasks.AsNoTracking().Where(t => t.UserId == userId && t.DueDate == date).ToListAsync();
 
     public async Task AddAsync(TodoItem task)
         => await context.Tasks.AddAsync(task);
