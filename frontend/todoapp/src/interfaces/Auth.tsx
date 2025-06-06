@@ -4,3 +4,7 @@ export interface AuthContextType {
   logout: () => void;
   getToken: () => string | null;
 }
+
+export interface JwtPayload {
+  exp: number;
+}

@@ -1,6 +1,8 @@
 import {
   Box,
   Button,
+  Input,
+  InputAdornment,
   Link,
   Paper,
   Stack,
@@ -12,6 +14,8 @@ import { loginApi } from "../service/AuthService";
 import { useNavigate } from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
 import { SplitErrors } from "../utils/StringSpliter";
+import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
+import KeyOutlinedIcon from '@mui/icons-material/KeyOutlined';
 import type { AxiosError } from "axios";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -77,6 +81,15 @@ function LoginPage() {
               autoComplete="email"
               fullWidth
               value={email}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <EmailOutlinedIcon/>
+                    </InputAdornment>
+                  ),
+                },
+              }}
               onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
@@ -85,6 +98,15 @@ function LoginPage() {
               autoComplete="password"
               fullWidth
               value={password}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <KeyOutlinedIcon/>
+                    </InputAdornment>
+                  )
+                },
+              }}
               onChange={(e) => setPassword(e.target.value)}
             />
           </Stack>

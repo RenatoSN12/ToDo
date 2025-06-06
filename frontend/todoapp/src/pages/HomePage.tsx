@@ -1,20 +1,62 @@
-import { useState } from "react";
-import Grid from "../components/grid";
+import { useEffect, useState } from "react";
 import type { TodoItem } from "../interfaces/TodoItem";
 import { Box, Button, Typography } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
+import Grid from "../components/Grid";
+import NewTodoItemDialog from "../components/TodoItemDialog";
+import { createTodoItem, getTodoItemsByDate, patchTodoItem } from "../service/TodoItemService";
+import { enqueueSnackbar } from "notistack";
+import type { AxiosError } from "axios";
+import { SplitErrors } from "../utils/StringSpliter";
+import { format } from "date-fns";
 
 function HomePage() {
   const [dialogOpen, setDialogOpen] = useState(false);
-
   const [date, setDate] = useState<Date | null>(new Date());
+  const [todos, setTodos] = useState<TodoItem[]>([]);
+  const [todoBeingEdited, setTodoBeingEdited] = useState<TodoItem | null>(null);
 
-  const handleSubmit = (todo: Partial<TodoItem>) => {
-    console.log("Nova Tarefa:", todo);
+  const handleEdit = (todo: TodoItem) => {
+    setTodoBeingEdited(todo);
+    setDialogOpen(true);
   };
 
+  useEffect(() => {
+    loadTodos();
+  }, [date]);
+
+  const loadTodos = async () => {
+    try {
+      const dateFormatted = format(date ?? new Date(), "yyyy-MM-dd");
+      var result = await getTodoItemsByDate(dateFormatted);
+      setTodos(result.data ?? []);
+    } catch {
+      setTodos([]);
+    }
+  };
+
+  const handleSubmit = async(todo: Partial<TodoItem>) => {
+    try {
+      const isEditing = todoBeingEdited?.id != null;
+      const acao = isEditing ? "atualizada" : "criada"
+
+      if(isEditing){
+        await patchTodoItem(todoBeingEdited);
+      }else{
+        await createTodoItem(todo)
+      }
+      
+      enqueueSnackbar(`Tarefa ${acao} com sucesso!`, {variant: "success"})
+      setDialogOpen(false)
+    } catch (err:any) {
+      const axiosErr = err as AxiosError<{ message: string }>;
+      const errors = SplitErrors(axiosErr.response?.data?.message);
+      errors.forEach((error) => enqueueSnackbar(error, { variant: "error" }));
+    }
+  }
+
   return (
-    <Box>
+    <Box mt={4}>
       <Box
         sx={{
           display: "flex",
@@ -44,7 +86,19 @@ function HomePage() {
           Nova Tarefa
         </Button>
       </Box>
-      <Grid></Grid>
+
+      <Grid
+        todos={todos}
+        onEdit={handleEdit}
+      ></Grid>
+
+      <NewTodoItemDialog
+        open={dialogOpen}
+        onClose={() => {setDialogOpen(false)}}
+        handleSubmit={handleSubmit}
+        todo={todoBeingEdited}
+        onExited= {() =>{setTodoBeingEdited(null)}}
+      />
     </Box>
   );
 }

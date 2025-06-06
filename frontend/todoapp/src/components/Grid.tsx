@@ -1,7 +1,9 @@
 import {
   Box,
   Checkbox,
+  IconButton,
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -9,30 +11,18 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { format } from "date-fns";
-import { useEffect, useState } from "react";
-import { getTodoItemsByDate } from "../service/TodoItemService";
 import type { TodoItem } from "../interfaces/TodoItem";
-import NewTodoItemDialog from "./NewTodoItemDialog";
+import EditIcon from "@mui/icons-material/Edit";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
-function Grid() {
-  const [date, setDate] = useState<Date | null>(new Date());
-  const [todos, setTodos] = useState<TodoItem[]>([]);
+interface GridProps {
+  todos: TodoItem[];
+  onEdit: (todo: TodoItem) => void;
+}
 
+function Grid({ todos, onEdit }: GridProps) {
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const formattedDate = date ? format(date, "yyyy-MM-dd") : "";
-        const result = await getTodoItemsByDate(formattedDate);
-        console.log(result);
-        setTodos(result.data || []);
-      } catch (err: any) {
-        setTodos([]);
-      }
-    };
-    fetchData();
-  }, [date]);
+  const handleComplete = (todoId: string) => {};
 
   return (
     <Box
@@ -55,6 +45,7 @@ function Grid() {
                 <TableCell>Título</TableCell>
                 <TableCell>Data</TableCell>
                 <TableCell>Status</TableCell>
+                <TableCell>Ações</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -67,6 +58,22 @@ function Grid() {
                   <TableCell>{todo.dueDate}</TableCell>
                   <TableCell>
                     {todo.isCompleted ? "Concluída" : "Pendente"}
+                  </TableCell>
+                  <TableCell>
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <IconButton
+                        color="primary"
+                        onClick={() => onEdit(todo)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton
+                        color="success"
+                        onClick={() => handleComplete(todo.id)}
+                      >
+                        <CheckCircleIcon />
+                      </IconButton>
+                    </Stack>
                   </TableCell>
                 </TableRow>
               ))}
@@ -81,8 +88,6 @@ function Grid() {
           </Table>
         </TableContainer>
       </Paper>
-
-      <NewTodoItemDialog open={dialogOpen} onClose={()=>setDialogOpen(false)} handleSubmit={handleSubmit}/>
     </Box>
   );
 }

@@ -164,7 +164,7 @@ function RegisterPage() {
             fullWidth
             sx={{ borderRadius: 2, mt: 2, height: 45 }}
           >
-            Registar
+            Registrar
           </Button>
         </Box>
       </Paper>

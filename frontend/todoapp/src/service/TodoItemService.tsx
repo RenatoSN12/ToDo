@@ -14,3 +14,27 @@ export const getTodoItemsByDate = async (date: string): Promise<Result<TodoItem[
   });
   return response.data;
 };
+
+export async function createTodoItem(todo: Partial<TodoItem>): Promise<Result> {
+  const token = localStorage.getItem('token');
+
+  const response = await axios.post(backendUrl, todo, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  return response.data;
+}
+
+export async function patchTodoItem(todo: Partial<TodoItem>): Promise<Result> {
+  const token = localStorage.getItem('token');
+
+  const response = await axios.patch(`${backendUrl}/${todo.id}`, todo, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  return response.data;
+}
