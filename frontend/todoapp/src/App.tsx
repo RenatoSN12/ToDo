@@ -4,18 +4,19 @@ import LoginPage from './pages/LoginPage'
 import type { JSX } from 'react';
 import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
+import { useAuth } from './contexts/AuthContext';
 
 function App() {
 
-  const isAuthenticated = () => localStorage.getItem("token");
+  const { isAuthenticated } = useAuth()
 
   const PrivateRoute = ({ children }: { children: JSX.Element }) => {
-    return isAuthenticated() ? children : <Navigate to="/register" />;
+    return isAuthenticated ? children : <Navigate to="/register"/>
   };
 
   const PublicRoute = ({ children }: { children: JSX.Element }) => {
-    return isAuthenticated() ? <Navigate to="/home" /> : children;
-  };
+  return isAuthenticated ? <Navigate to="/home" /> : children;
+};
 
   return (
     <Routes>
@@ -48,7 +49,7 @@ function App() {
 
       <Route
         path="/"
-        element={<Navigate to={isAuthenticated() ? "/home" : "/register"} />}
+        element={<Navigate to={isAuthenticated ? "/home" : "/register"} />}
       />
 
       <Route path="*" element={<Navigate to="/" />} />

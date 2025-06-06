@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { SnackbarProvider } from 'notistack'
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AuthProvider } from './contexts/AuthContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -16,7 +17,9 @@ createRoot(document.getElementById('root')!).render(
           anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
           autoHideDuration={3000}
         >
-          <App />
+          <AuthProvider>
+            <App />
+          </AuthProvider>
         </SnackbarProvider>
       </LocalizationProvider>
     </BrowserRouter>

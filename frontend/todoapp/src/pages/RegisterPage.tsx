@@ -1,9 +1,21 @@
-import { Box, Button, Link, Paper, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  InputAdornment,
+  Link,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { register } from "../service/AuthService";
 import { useState } from "react";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 import { SplitErrors } from "../utils/StringSpliter";
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
+import KeyOutlinedIcon from '@mui/icons-material/KeyOutlined';
 import type { AxiosError } from "axios";
 
 function RegisterPage() {
@@ -49,12 +61,18 @@ function RegisterPage() {
       <Paper
         elevation={3}
         sx={{
-          p: 3,
+          p: 6,
+          borderRadius: "15px",
           width: { xs: "90%", sm: "400px" },
           boxSizing: "border-box",
         }}
       >
-        <Typography fontWeight={700} variant="h4" align="center">
+        <Typography
+          fontWeight={700}
+          variant="h5"
+          letterSpacing={1.3}
+          align="center"
+        >
           Registrar
         </Typography>
 
@@ -65,36 +83,77 @@ function RegisterPage() {
           flexDirection="column"
           gap={2}
         >
-          <TextField
-            label="Nome"
-            type="text"
-            fullWidth
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <TextField
-            label="Email"
-            type="email"
-            fullWidth
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <TextField
-            label="Senha"
-            type="password"
-            fullWidth
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <TextField
-            label="Senha (Confirmação)"
-            type="password"
-            fullWidth
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
+          <Stack spacing={3}>
+            <TextField
+              label="Nome"
+              type="text"
+              autoComplete="name"
+              fullWidth
+              value={name}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AccountCircleOutlinedIcon/>
+                    </InputAdornment>
+                  ),
+                },
+              }}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <TextField
+              label="Email"
+              type="email"
+              autoComplete="email"
+              fullWidth
+              value={email}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <EmailOutlinedIcon/>
+                    </InputAdornment>
+                  ),
+                },
+              }}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField
+              label="Senha"
+              type="password"
+              autoComplete="new-password"
+              fullWidth
+              value={password}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <KeyOutlinedIcon/>
+                    </InputAdornment>
+                  ),
+                },
+              }}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <TextField
+              label="Senha (Confirmação)"
+              type="password"
+              fullWidth
+              value={confirmPassword}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <KeyOutlinedIcon/>
+                    </InputAdornment>
+                  ),
+                },
+              }}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </Stack>
 
-          <Link href="/login" underline="hover">
+          <Link href="/login" variant="body2" underline="hover">
             Já possuo uma conta
           </Link>
 
@@ -103,8 +162,9 @@ function RegisterPage() {
             type="submit"
             variant="contained"
             fullWidth
+            sx={{ borderRadius: 2, mt: 2, height: 45 }}
           >
-            Entrar
+            Registar
           </Button>
         </Box>
       </Paper>

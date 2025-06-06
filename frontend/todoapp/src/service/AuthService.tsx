@@ -4,7 +4,7 @@ import type { Result } from '../interfaces/Result';
 
 const backendUrl = "http://localhost:5052/api/auth";
 
-export const login = async(emailAddress: string, password: string): Promise<LoginResult> => {
+export const loginApi = async(emailAddress: string, password: string): Promise<LoginResult> => {
     const response = await axios.post(`${backendUrl}/login`, {emailAddress, password});
     return response.data;
 }

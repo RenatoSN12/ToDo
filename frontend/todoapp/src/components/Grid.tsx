@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Checkbox,
   Paper,
   Table,
@@ -9,25 +8,20 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
 } from "@mui/material";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { getTodoItemsByDate } from "../service/TodoItemService";
 import type { TodoItem } from "../interfaces/TodoItem";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import NewTodoItemDialog from "./NewTodoItemDialog";
 
 function Grid() {
   const [date, setDate] = useState<Date | null>(new Date());
   const [todos, setTodos] = useState<TodoItem[]>([]);
-  const [loading, setLoading] = useState(false);
-  
 
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
       try {
         const formattedDate = date ? format(date, "yyyy-MM-dd") : "";
         const result = await getTodoItemsByDate(formattedDate);
@@ -35,8 +29,6 @@ function Grid() {
         setTodos(result.data || []);
       } catch (err: any) {
         setTodos([]);
-      } finally {
-        setLoading(false);
       }
     };
     fetchData();
