@@ -41,24 +41,7 @@ cd ToDo
 
 ### 2. Configurar o Backend:
 
-#### 2.1 Adicionar a connection string com User Secrets
-
-A aplicação utiliza o PostgreSQL na porta padrão `5432`.  
-Caso sua instalação esteja usando outra porta, ajuste na configuração do comando `dotnet user-secrets set` que está destacado logo abaixo na documentação antes de roda-lo:
-
-```bash
-cd backend
-cd ToDo.Api
-
-dotnet user-secrets init
-dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Server=localhost;Port=5432;Database=todo_db;User Id=usuarioteste;Password=q3*~K~41FGZs;"
-```
-
----
-
-#### 2.2 Criar o banco de dados e usuário PostgreSQL:
-
-Antes de atualizar o banco via EF Core, certifique-se de que o banco e o usuário existem:
+#### 2.1 Criar o banco de dados e usuário PostgreSQL:
 
 ```sql
 -- Execute no psql ou pgAdmin:
@@ -68,7 +51,17 @@ CREATE DATABASE todo_db OWNER usuarioteste;
 GRANT ALL PRIVILEGES ON DATABASE todo_db TO usuarioteste;
 ```
 
-``` bash
+
+#### 2.2 Adicionar a connection string com User Secrets e rodar o database update.
+
+A aplicação utiliza o PostgreSQL na porta padrão `5432`.  
+Caso sua instalação esteja usando outra porta, ajuste na configuração do comando `dotnet user-secrets set` que está destacado logo abaixo na documentação antes de rodá-lo:
+
+```bash
+cd ToDo/backend/ToDo.Api
+
+dotnet user-secrets init
+dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Server=localhost;Port=5432;Database=todo_db;User Id=usuarioteste;Password=q3*~K~41FGZs;"
 dotnet ef database update
 ```
 
@@ -86,11 +79,13 @@ dotnet run
 
 Edite o arquivo `.env` na raiz do frontend com a URL da API:
 
-Você deve alterar a porta da URL para ficar compatível com a rota que sua API está rodando.
+Ajuste a porta da URL conforme a porta em que a API estiver rodando.
 
 ```env
 VITE_API_URL=http://localhost:5052/api
 ```
+
+---
 
 ### 4. Rodar o Frontend
 
@@ -113,7 +108,7 @@ npm start
 
 - Crie uma nova tarefa clicando em **"Nova Tarefa"**.
 - Após criada, é possível:
-  - Editar ou excluir através dos botões na tabela.
+  - Editar ou excluir usando os botões na tabela.
   - Marcar como concluída clicando em **"Concluir Tarefas"**.
 
 ---
