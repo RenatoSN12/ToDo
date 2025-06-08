@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Input,
   InputAdornment,
   Link,
   Paper,
@@ -18,6 +17,7 @@ import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import KeyOutlinedIcon from '@mui/icons-material/KeyOutlined';
 import type { AxiosError } from "axios";
 import { useAuth } from "../contexts/AuthContext";
+import LoginIcon from '@mui/icons-material/Login';
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -58,14 +58,17 @@ function LoginPage() {
           boxSizing: "border-box",
         }}
       >
-        <Typography
-          fontWeight={700}
-          variant="h5"
-          letterSpacing={1.3}
-          align="center"
-        >
-          Entrar
-        </Typography>
+        <Stack direction={"row"} alignItems={"center"} spacing={1} sx={{marginBottom:4}}>
+          <LoginIcon/>
+          <Typography
+            fontWeight={700}
+            variant="h5"
+            letterSpacing={1.3}
+            align="center"
+          >
+            Entrar
+          </Typography>
+        </Stack>
 
         <Box
           component="form"

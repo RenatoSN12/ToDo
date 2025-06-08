@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { TodoItem } from "../interfaces/TodoItem";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Checkbox, Stack, Typography } from "@mui/material";
 import { DesktopDatePicker } from "@mui/x-date-pickers";
 import Grid from "../components/Grid";
 import {
@@ -17,9 +17,12 @@ import TodoItemDialog from "../components/TodoItemDialog";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ConfirmDialog from "../components/ConfirmDialog";
+import LogoutIcon from '@mui/icons-material/Logout';
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import { format } from "date-fns";
-import { safeDateFromString } from "../utils/DateHelpers";
+import { safeDateFromString, toFullDate } from "../utils/DateHelpers";
+import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function HomePage() {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
@@ -30,7 +33,25 @@ function HomePage() {
 
   const [todoBeingEdited, setTodoBeingEdited] = useState<Partial<TodoItem> | null>(null);
 
+  const [allItemsCompleted, setAllItemsCompleted] = useState(false)
+
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  useEffect(()=> {
+    if(todos.every(x => x.isCompleted)){
+      setAllItemsCompleted(true)
+    }else{
+      setAllItemsCompleted(false)
+    }
+  },[todos])
+
+  const onLogoutClicked = () => {
+    logout();
+    navigate("/register");
+  }
 
   const onDateChanged = (date: Date | null) => {
     setDate(date);
@@ -50,6 +71,7 @@ function HomePage() {
     const newTodo: Partial<TodoItem> = {
       title: "",
       description: "",
+      dueDate: format(new Date(), "yyyy-MM-dd") 
     }
 
     setTodoBeingEdited(newTodo);
@@ -122,8 +144,14 @@ function HomePage() {
         const result = await patchTodoItem(todo);
         const updatedTodo = result.data;
 
+        const updatedDate = safeDateFromString(updatedTodo?.dueDate ?? "");
+        if (updatedDate.toLocaleDateString() !== date?.toLocaleDateString()){
+          setTodos((prevTodos) => prevTodos.filter((x)=> x.id !== updatedTodo?.id))
+          return;
+        }
+
         setTodos((prevTodos) =>
-          prevTodos.map((t) => (t.id === updatedTodo.id ? updatedTodo : t))
+          prevTodos.map((t) => (t.id === updatedTodo?.id ? updatedTodo : t))
         );
       } else {
         const result = await createTodoItem(todo);
@@ -133,7 +161,7 @@ function HomePage() {
 
         const createdDate = safeDateFromString(newTodo.dueDate ?? "");
         
-        if(createdDate === date && result.data !== null){
+        if(createdDate.toLocaleDateString() === date?.toLocaleDateString() && result.data !== null){
           setTodos((prevTodos) => [...prevTodos, newTodo]);
         }
       }
@@ -159,11 +187,17 @@ function HomePage() {
           mb: 3,
         }}
       >
-        <Stack direction="row" alignItems="center" spacing={1} mb={{ xs: 4 }}>
+        <Stack direction="column" alignItems="center" spacing={1} mb={{ xs: 4 }}>
+          <Stack direction="row" alignItems="center" spacing={1}>
           <EventNoteIcon fontSize="large" />
           <Typography variant="h4" fontWeight={{ xs: 400, sm: 500 }}>
             Tarefas do Dia
           </Typography>
+          </Stack>
+          <Stack direction={"row"} alignItems={"center"}>
+            <Typography>{toFullDate(date)}</Typography>
+            <Checkbox disabled checked={allItemsCompleted}></Checkbox>
+          </Stack>
         </Stack>
 
         <Stack
@@ -204,6 +238,17 @@ function HomePage() {
             }}
           >
             <Typography>Nova Tarefa</Typography>
+          </Button>
+          <Button
+            startIcon={<LogoutIcon/>}
+            variant="outlined"
+            onClick={onLogoutClicked}
+            sx={{
+               textTransform: "none",
+               px: 2, borderRadius: 2
+            }}
+          >
+            <Typography>Sair</Typography>
           </Button>
         </Stack>
       </Box>

@@ -1,14 +1,17 @@
-// export function safeDateFromString(input: string | null): Date {
-  // if(input === null) return new Date();
-  
-  // const dStr = input.replace(/\//g, "-");
+export function toFullDate(date : Date | null): string {
+  if(date === null){
+    date = new Date();
+  }
 
-  // let dateParts: string[] = dStr.split("-");
+  const formatted = new Intl.DateTimeFormat('pt-BR', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+}).format(date);
 
-  // let dateObject: Date = new Date(+dateParts[0],+dateParts[2] -1, +dateParts[1]);
-
-  // return dateObject;
-// }
+return formatted; 
+}
 
 export function safeDateFromString(input: string | null): Date {
   if (!input) return new Date();

@@ -13,10 +13,11 @@ import { useState } from "react";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 import { SplitErrors } from "../utils/StringSpliter";
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
-import KeyOutlinedIcon from '@mui/icons-material/KeyOutlined';
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
+import KeyOutlinedIcon from "@mui/icons-material/KeyOutlined";
 import type { AxiosError } from "axios";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 
 function RegisterPage() {
   const [name, setName] = useState("");
@@ -67,14 +68,22 @@ function RegisterPage() {
           boxSizing: "border-box",
         }}
       >
-        <Typography
-          fontWeight={700}
-          variant="h5"
-          letterSpacing={1.3}
-          align="center"
+        <Stack
+          direction={"row"}
+          alignItems={"center"}
+          spacing={1}
+          sx={{ marginBottom: 4 }}
         >
-          Registrar
-        </Typography>
+          <PersonAddIcon />
+          <Typography
+            fontWeight={700}
+            variant="h5"
+            letterSpacing={1.3}
+            align="center"
+          >
+            Registrar
+          </Typography>
+        </Stack>
 
         <Box
           component="form"
@@ -94,7 +103,7 @@ function RegisterPage() {
                 input: {
                   startAdornment: (
                     <InputAdornment position="start">
-                      <AccountCircleOutlinedIcon/>
+                      <AccountCircleOutlinedIcon />
                     </InputAdornment>
                   ),
                 },
@@ -111,7 +120,7 @@ function RegisterPage() {
                 input: {
                   startAdornment: (
                     <InputAdornment position="start">
-                      <EmailOutlinedIcon/>
+                      <EmailOutlinedIcon />
                     </InputAdornment>
                   ),
                 },
@@ -128,7 +137,7 @@ function RegisterPage() {
                 input: {
                   startAdornment: (
                     <InputAdornment position="start">
-                      <KeyOutlinedIcon/>
+                      <KeyOutlinedIcon />
                     </InputAdornment>
                   ),
                 },
@@ -144,7 +153,7 @@ function RegisterPage() {
                 input: {
                   startAdornment: (
                     <InputAdornment position="start">
-                      <KeyOutlinedIcon/>
+                      <KeyOutlinedIcon />
                     </InputAdornment>
                   ),
                 },

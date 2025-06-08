@@ -34,7 +34,6 @@ function TodoItemDialog({
 }: TodoItemDialogProps) {
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Passou aqui 3" + JSON.stringify(todo));
     if (!todo) return;
     handleSubmit(todo);
     onClose();
@@ -83,13 +82,17 @@ function TodoItemDialog({
 
           <DesktopDatePicker
             label="Data de Execução"
-            value={todo?.dueDate ? safeDateFromString(todo.dueDate) : new Date()}
-            onChange={(newDate) =>
-              setTodo((prev) => ({
-                ...prev!,
-                dueDate: newDate ? format(newDate, "yyyy-MM-dd") : null,
-              }))
+            value={
+              todo?.dueDate ? safeDateFromString(todo.dueDate) : new Date()
             }
+            onChange={(newDate) => {
+              if (newDate instanceof Date && !isNaN(newDate.getTime())) {
+                setTodo((prev) => ({
+                  ...prev!,
+                  dueDate: format(newDate, "yyyy-MM-dd"),
+                }));
+              }
+            }}
             slotProps={{
               textField: {
                 fullWidth: true,

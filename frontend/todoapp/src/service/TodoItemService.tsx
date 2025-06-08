@@ -25,7 +25,7 @@ export async function createTodoItem(todo: Partial<TodoItem>): Promise<Result<To
   return response.data;
 }
 
-export async function patchTodoItem(todo: Partial<TodoItem>): Promise<Result> {
+export async function patchTodoItem(todo: Partial<TodoItem>): Promise<Result<TodoItem>> {
   const token = localStorage.getItem('token');
 
   const response = await axios.patch(`${backendUrl}/${todo.id}`, todo, {

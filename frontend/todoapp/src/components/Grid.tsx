@@ -19,6 +19,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ConfirmDialog from "./ConfirmDialog";
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { formatDateBR, safeDateFromString } from "../utils/DateHelpers";
+import { format } from "date-fns";
 
 interface GridProps {
   todos: TodoItem[];
@@ -66,8 +67,8 @@ function Grid({ todos, onSelectedItemsChange, onEdit, onDelete }: GridProps) {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell padding="checkbox">
-                  <Checkbox color="primary" />
+                <TableCell align="center">
+                  #
                 </TableCell>
                 <TableCell align="center">Título</TableCell>
                 <TableCell align="center">Data</TableCell>
@@ -88,14 +89,14 @@ function Grid({ todos, onSelectedItemsChange, onEdit, onDelete }: GridProps) {
                   <TableCell align="center">{todo.title}</TableCell>
                   <TableCell align="center">
                     <Chip
-                      label={formatDateBR(safeDateFromString(todo.dueDate))}
+                      label={format(safeDateFromString(todo.dueDate), "dd/MM/yyyy")}
                       color={
                         safeDateFromString(todo.dueDate) < new Date()
                           ? "error"
                           : "default"
                       }
                       size="small"
-                      variant="outlined"
+                      variant="filled"
                     ></Chip>
                   </TableCell>
                   <TableCell align="center">
