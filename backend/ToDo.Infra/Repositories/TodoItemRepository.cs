@@ -13,6 +13,8 @@ public class TodoItemRepository(AppDbContext context) : ITodoItemRepository
     public async Task<IEnumerable<TodoItem>> GetAllByDate(string userId, DateOnly date)
         => await context.Tasks.AsNoTracking().Where(t => t.UserId == userId && t.DueDate == date).ToListAsync();
 
+    public async Task<IEnumerable<TodoItem>> GetManyById(Guid[] ids)
+        => await context.Tasks.Where(x => ids.Contains(x.Id)).ToListAsync();
     public async Task AddAsync(TodoItem task)
         => await context.Tasks.AddAsync(task);
 

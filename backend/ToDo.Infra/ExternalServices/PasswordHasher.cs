@@ -1,4 +1,4 @@
-using ToDo.Application.Abstractions.Security;
+using ToDo.Application.Security;
 
 namespace ToDo.Infra.ExternalServices;
 

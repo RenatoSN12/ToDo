@@ -1,6 +1,4 @@
-using ToDo.Domain.Requests;
-
-namespace ToDo.Application.UseCases.Results;
+namespace ToDo.Application.Common.Results;
 
 public record Result : IResult
 {

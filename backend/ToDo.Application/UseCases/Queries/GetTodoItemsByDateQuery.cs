@@ -1,4 +1,4 @@
-using ToDo.Domain.Requests.Queries;
+using ToDo.Application.Common.Requests.Queries;
 
 namespace ToDo.Application.UseCases.Queries;
 

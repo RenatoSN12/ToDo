@@ -1,4 +1,4 @@
-using ToDo.Domain.Requests.Commands;
+using ToDo.Application.Common.Requests.Commands;
 
 namespace ToDo.Application.UseCases.Commands.Users;
 

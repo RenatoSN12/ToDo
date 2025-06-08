@@ -1,16 +1,12 @@
-using ToDo.Application.Abstractions.Security;
+using ToDo.Application.Common.Handlers;
+using ToDo.Application.Common.Results;
 using ToDo.Application.Mappers;
-using ToDo.Application.UseCases.Commands;
+using ToDo.Application.Security;
 using ToDo.Application.UseCases.Commands.Users;
-using ToDo.Application.UseCases.Results;
-using ToDo.Application.UseCases.Validators;
 using ToDo.Application.UseCases.Validators.Users;
 using ToDo.Domain.Data;
 using ToDo.Domain.Data.Repositories;
 using ToDo.Domain.Entities;
-using ToDo.Domain.Handlers;
-using ToDo.Domain.Requests;
-using ToDo.Domain.Requests.Commands;
 
 namespace ToDo.Application.UseCases.Handlers.Users;
 
@@ -20,7 +16,7 @@ public class RegisterUserCommandHandler(
     IUnitOfWork unitOfWork,
     RegisterUserValidator validator) : ICommandHandler<RegisterUserCommand>
 {
-    public async Task<IResult> Handle(RegisterUserCommand command)
+    public async Task<Result> Handle(RegisterUserCommand command)
     {
         var errors = await ValidateRequest(command);
         if (errors.Any())

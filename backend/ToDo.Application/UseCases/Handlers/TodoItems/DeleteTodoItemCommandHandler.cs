@@ -1,12 +1,9 @@
-using ToDo.Application.UseCases.Commands;
+using ToDo.Application.Common.Handlers;
+using ToDo.Application.Common.Results;
 using ToDo.Application.UseCases.Commands.TodoItems;
-using ToDo.Application.UseCases.Results;
 using ToDo.Domain.Data;
 using ToDo.Domain.Data.Repositories;
 using ToDo.Domain.Entities;
-using ToDo.Domain.Handlers;
-using ToDo.Domain.Requests;
-using ToDo.Domain.Requests.Commands;
 
 namespace ToDo.Application.UseCases.Handlers.TodoItems;
 
@@ -15,7 +12,7 @@ public class DeleteTodoItemCommandHandler(
     IUnitOfWork unitOfWork
 ) : ICommandHandler<DeleteTodoItemCommand>
 {
-    public async Task<IResult> Handle(DeleteTodoItemCommand command)
+    public async Task<Result> Handle(DeleteTodoItemCommand command)
     {
         var todoItem = await repository.GetByIdAsync(command.Id, command.UserId);
         if (todoItem is null)

@@ -1,4 +1,4 @@
-namespace ToDo.Application.Abstractions.Security;
+namespace ToDo.Application.Security;
 
 public interface IPasswordHasher
 {

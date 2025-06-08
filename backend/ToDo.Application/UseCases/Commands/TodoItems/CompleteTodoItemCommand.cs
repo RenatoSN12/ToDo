@@ -1,5 +1,5 @@
-using ToDo.Domain.Requests.Commands;
+using ToDo.Application.Common.Requests.Commands;
 
 namespace ToDo.Application.UseCases.Commands.TodoItems;
 
-public record CompleteTodoItemCommand(Guid Id, string UserId) : ICommand;
+public record CompleteTodoItemsCommand(Guid[] Ids) : ICommand;

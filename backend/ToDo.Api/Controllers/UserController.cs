@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using ToDo.Api.Extensions;
+using ToDo.Application.Common.Handlers;
+using ToDo.Application.Common.Results;
 using ToDo.Application.UseCases;
 using ToDo.Application.UseCases.Commands;
 using ToDo.Application.UseCases.Commands.Users;
-using ToDo.Application.UseCases.Results;
-using ToDo.Domain.Handlers;
+using IResult = Microsoft.AspNetCore.Http.IResult;
 
 namespace ToDo.Api.Controllers;
 
@@ -28,7 +29,7 @@ public class UserController(
     [HttpPost("register")]
     public async Task<IResult> Register([FromBody] RegisterUserCommand command)
     {
-        var result = (Result)await registerCommandHandler.Handle(command);
+        var result = await registerCommandHandler.Handle(command);
         return !result.Success ?
             TypedResults.Json(result, statusCode: result.StatusCode) :
             TypedResults.Created("/", result);

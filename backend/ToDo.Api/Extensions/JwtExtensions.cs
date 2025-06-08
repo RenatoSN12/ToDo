@@ -2,8 +2,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using ToDo.Application.Common.Results;
 using ToDo.Application.UseCases.Commands.Users;
-using ToDo.Application.UseCases.Results;
 
 namespace ToDo.Api.Extensions;
 

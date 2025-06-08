@@ -1,16 +1,14 @@
+using ToDo.Application.Common.Handlers;
+using ToDo.Application.Common.Results;
 using ToDo.Application.Mappers;
-using ToDo.Application.UseCases.Commands;
 using ToDo.Application.UseCases.Queries;
-using ToDo.Application.UseCases.Results;
 using ToDo.Domain.Data.Repositories;
-using ToDo.Domain.Handlers;
-using ToDo.Domain.Requests;
 
 namespace ToDo.Application.UseCases.Handlers.TodoItems;
 
 public class GetTodoItemByIdQueryHandler(ITodoItemRepository repository) : IQueryHandler<GetTodoItemByIdQuery>
 {
-    public async Task<IResult> Handle(GetTodoItemByIdQuery query)
+    public async Task<Result> Handle(GetTodoItemByIdQuery query)
     {
         var todoItem = await repository.GetByIdAsync(query.Id, query.UserId);
         return todoItem is null ?

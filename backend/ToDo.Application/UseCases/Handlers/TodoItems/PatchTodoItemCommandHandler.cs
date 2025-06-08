@@ -1,13 +1,10 @@
+using ToDo.Application.Common.Handlers;
+using ToDo.Application.Common.Results;
 using ToDo.Application.Mappers;
-using ToDo.Application.UseCases.Commands;
 using ToDo.Application.UseCases.Commands.TodoItems;
-using ToDo.Application.UseCases.Results;
 using ToDo.Domain.Data;
 using ToDo.Domain.Data.Repositories;
 using ToDo.Domain.Entities;
-using ToDo.Domain.Handlers;
-using ToDo.Domain.Requests;
-using ToDo.Domain.Requests.Commands;
 
 namespace ToDo.Application.UseCases.Handlers.TodoItems;
 
@@ -16,7 +13,7 @@ public class PatchTodoItemCommandHandler(
     IUnitOfWork unitOfWork
 ) : ICommandHandler<PatchTodoItemCommand>
 {
-    public async Task<IResult> Handle(PatchTodoItemCommand command)
+    public async Task<Result> Handle(PatchTodoItemCommand command)
     {
         var todoItem = await repository.GetByIdAsync(command.Id, command.UserId);
         if (todoItem is null)

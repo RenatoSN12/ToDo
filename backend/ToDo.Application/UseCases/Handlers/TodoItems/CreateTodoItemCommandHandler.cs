@@ -1,14 +1,10 @@
+using ToDo.Application.Common.Handlers;
+using ToDo.Application.Common.Results;
 using ToDo.Application.Mappers;
-using ToDo.Application.UseCases.Commands;
 using ToDo.Application.UseCases.Commands.TodoItems;
-using ToDo.Application.UseCases.Results;
-using ToDo.Application.UseCases.Validators;
 using ToDo.Application.UseCases.Validators.TodoItems;
 using ToDo.Domain.Data;
 using ToDo.Domain.Data.Repositories;
-using ToDo.Domain.Handlers;
-using ToDo.Domain.Requests;
-using ToDo.Domain.Requests.Commands;
 
 namespace ToDo.Application.UseCases.Handlers.TodoItems;
 
@@ -17,7 +13,7 @@ public class CreateTodoItemCommandHandler(
     ITodoItemRepository repository,
     IUnitOfWork unitOfWork) : ICommandHandler<CreateTodoItemCommand>
 {
-    public async Task<IResult> Handle(CreateTodoItemCommand command)
+    public async Task<Result> Handle(CreateTodoItemCommand command)
     {
         var result = await validator.ValidateAsync(command);
 

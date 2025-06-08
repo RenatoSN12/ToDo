@@ -1,7 +1,4 @@
-
-using System.Text.Json.Serialization;
-
-namespace ToDo.Application.UseCases.Results;
+namespace ToDo.Application.Common.Results;
 
 public record LoginResult : Result
 {

@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using ToDo.Application.Abstractions.Security;
+using ToDo.Application.Security;
 using ToDo.Domain.Data;
 using ToDo.Domain.Data.Repositories;
 using ToDo.Infra.Data;

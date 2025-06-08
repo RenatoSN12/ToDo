@@ -1,13 +1,9 @@
-using ToDo.Application.Abstractions.Security;
-using ToDo.Application.Mappers;
-using ToDo.Application.UseCases.Commands;
+using ToDo.Application.Common.Handlers;
+using ToDo.Application.Common.Results;
+using ToDo.Application.Security;
 using ToDo.Application.UseCases.Commands.Users;
-using ToDo.Application.UseCases.Results;
 using ToDo.Application.UseCases.Validators.Users;
 using ToDo.Domain.Data.Repositories;
-using ToDo.Domain.Handlers;
-using ToDo.Domain.Requests;
-using ToDo.Domain.Requests.Commands;
 
 namespace ToDo.Application.UseCases.Handlers.Users;
 
@@ -16,7 +12,7 @@ public class LoginUserCommandHandler(
     IPasswordHasher passwordHasher,
     LoginUserValidator validator) : ICommandHandler<LoginUserCommand>
 {
-    public async Task<IResult> Handle(LoginUserCommand command)
+    public async Task<Result> Handle(LoginUserCommand command)
     {
         var validationResult = await validator.ValidateAsync(command);
         if (!validationResult.IsValid)

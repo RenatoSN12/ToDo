@@ -8,63 +8,49 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
-import { DatePicker } from "@mui/x-date-pickers";
+import { DesktopDatePicker } from "@mui/x-date-pickers";
 import type { TodoItem } from "../interfaces/TodoItem";
-import { format } from "date-fns";
-import { stringToDate } from "../utils/DateHelpers";
 import EditIcon from "@mui/icons-material/Edit";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { safeDateFromString } from "../utils/DateHelpers";
+import { format } from "date-fns";
 
-interface SaveTodoItemProps {
+interface TodoItemDialogProps {
   open: boolean;
   onClose: () => void;
   onExited: () => void;
   handleSubmit: (todo: Partial<TodoItem>) => void;
-  todo?: TodoItem | null
+  todo: Partial<TodoItem> | null;
+  setTodo: React.Dispatch<React.SetStateAction<Partial<TodoItem> | null>>;
 }
-function TodoItemDialog({open,onClose, onExited, handleSubmit,todo}: SaveTodoItemProps) {
-  
-  const [title, setTitle] = useState("");
-  const [dueDate, setDueDate] = useState<Date | null>(null);
-  const [description, setDescription] = useState("");
-  const [completedAt, setCompletedAt] = useState<Date | null>(null);
-  const [isCompleted, setIsCompleted] = useState(false);
 
-  useEffect(() => {
-      setTitle(todo?.title ?? "");
-  
-      const dueDate = stringToDate(todo?.dueDate);
-      setDueDate(dueDate);
-  
-      const completedAt = stringToDate(todo?.completedAt);
-      setCompletedAt(completedAt);
-  
-      setDescription(todo?.description ?? "");
-  
-      setIsCompleted(todo?.isCompleted ?? false);
-  }, [open]);
-
+function TodoItemDialog({
+  open,
+  onClose,
+  onExited,
+  handleSubmit,
+  todo,
+  setTodo,
+}: TodoItemDialogProps) {
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-      handleSubmit({
-        title,
-        description,
-        dueDate: dueDate ? format(dueDate, "yyyy-MM-dd") : "",
-      });
-
+    console.log("Passou aqui 3" + JSON.stringify(todo));
+    if (!todo) return;
+    handleSubmit(todo);
     onClose();
   };
+
+  const isEditing = todo?.id != null;
 
   return (
     <Dialog
       open={open}
       onClose={onClose}
       slotProps={{
-        transition: {
-          onExited: () => {
-            onExited();
+        transition: { onExited: onExited },
+        paper: {
+          sx: {
+            borderRadius: 4,
           },
         },
       }}
@@ -73,9 +59,9 @@ function TodoItemDialog({open,onClose, onExited, handleSubmit,todo}: SaveTodoIte
         <DialogTitle>
           <Stack direction={"row"} spacing={1} alignItems={"center"}>
             <Typography variant="h6">
-              {todo ? "Editar Tarefa" : "Nova Tarefa"}
+              {isEditing ? "Editar Tarefa" : "Nova Tarefa"}
             </Typography>
-            {todo ? (
+            {isEditing ? (
               <EditIcon color="primary" />
             ) : (
               <AddCircleIcon color="success" />
@@ -88,14 +74,22 @@ function TodoItemDialog({open,onClose, onExited, handleSubmit,todo}: SaveTodoIte
             margin="dense"
             label="Título"
             fullWidth
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={todo?.title ?? ""}
+            onChange={(e) =>
+              setTodo((prev) => ({ ...prev, title: e.target.value }))
+            }
             required
           />
-          <DatePicker
+
+          <DesktopDatePicker
             label="Data de Execução"
-            value={dueDate}
-            onChange={(newValue) => setDueDate(newValue)}
+            value={todo?.dueDate ? safeDateFromString(todo.dueDate) : new Date()}
+            onChange={(newDate) =>
+              setTodo((prev) => ({
+                ...prev!,
+                dueDate: newDate ? format(newDate, "yyyy-MM-dd") : null,
+              }))
+            }
             slotProps={{
               textField: {
                 fullWidth: true,
@@ -104,20 +98,24 @@ function TodoItemDialog({open,onClose, onExited, handleSubmit,todo}: SaveTodoIte
             }}
           />
           <TextField
-            autoFocus
             multiline
             rows={3}
             margin="dense"
             label="Descrição"
             fullWidth
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
+            value={todo?.description ?? ""}
+            onChange={(e) =>
+              setTodo((prev) => ({ ...prev, description: e.target.value }))
+            }
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose}>Cancelar</Button>
-          <Button type="submit">Salvar</Button>
+          <Button variant="outlined" onClick={onClose}>
+            Cancelar
+          </Button>
+          <Button variant="contained" type="submit">
+            Salvar
+          </Button>
         </DialogActions>
       </form>
     </Dialog>

@@ -1,5 +1,6 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using ToDo.Application.Common.Handlers;
 using ToDo.Application.UseCases.Commands.TodoItems;
 using ToDo.Application.UseCases.Commands.Users;
 using ToDo.Application.UseCases.Handlers.TodoItems;
@@ -8,7 +9,6 @@ using ToDo.Application.UseCases.Queries;
 using ToDo.Application.UseCases.Validators;
 using ToDo.Application.UseCases.Validators.TodoItems;
 using ToDo.Application.UseCases.Validators.Users;
-using ToDo.Domain.Handlers;
 
 namespace ToDo.Application;
 
@@ -27,7 +27,7 @@ public static class DependencyInjection
         services.AddScoped<ICommandHandler<PatchTodoItemCommand>, PatchTodoItemCommandHandler>();
         services.AddScoped<ICommandHandler<RegisterUserCommand>, RegisterUserCommandHandler>();
         services.AddScoped<ICommandHandler<LoginUserCommand>, LoginUserCommandHandler>();
-        services.AddScoped<ICommandHandler<CompleteTodoItemCommand>, CompleteTodoItemCommandHandler>();
+        services.AddScoped<ICommandHandler<CompleteTodoItemsCommand>, CompleteTodoItemsCommandHandler>();
         services.AddScoped<IQueryHandler<GetTodoItemsByDateQuery>, GetTodoItemsByDateCommandHandler>();
         services.AddScoped<IQueryHandler<GetTodoItemByIdQuery>, GetTodoItemByIdQueryHandler>();
     }
