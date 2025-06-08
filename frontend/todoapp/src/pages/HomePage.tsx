@@ -220,10 +220,13 @@ function HomePage() {
             sx={{ bgcolor: "#FFFFFF" }}
             label="Selecionar data"
             value={date}
-            onChange={(newValue) => onDateChanged(newValue)}
+            onChange={(newValue) => {
+              if (newValue instanceof Date && !isNaN(newValue.getTime())) {
+                onDateChanged(newValue);
+              }
+            }}
             slotProps={{ textField: { size: "small", variant: "outlined" } }}
           />
-
           <Button
             sx={{
               display: selectedIds.length > 0 ? "flex" : "none",

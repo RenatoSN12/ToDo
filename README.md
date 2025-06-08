@@ -72,6 +72,8 @@ dotnet ef database update
 dotnet run
 ```
 
+Deixe esse terminal aberto rodando a API, todas as ações a partir daqui faça em um novo terminal.
+
 ---
 
 ### 3. Configurar o Frontend
@@ -91,7 +93,7 @@ VITE_API_URL=http://localhost:5052/api
 ```bash
 cd ../../frontend/todoapp
 npm install
-npm start
+npm run dev
 ```
 
 ---
