@@ -34,7 +34,6 @@ Este projeto é uma aplicação Web para gerenciamento de tarefas.
 ### 1. Clone o repositório:
 ```bash
 git clone https://github.com/RenatoSN12/ToDo.git
-cd ToDo
 ```
 
 ---
