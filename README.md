@@ -42,6 +42,10 @@ cd ToDo
 ### 2. Configurar o Backend:
 
 #### 2.1 Adicionar a connection string com User Secrets
+
+A aplicação utiliza o PostgreSQL na porta padrão `5432`.  
+Caso sua instalação esteja usando outra porta, ajuste na configuração do comando `dotnet user-secrets set` que está destacado logo abaixo na documentação antes de roda-lo:
+
 ```bash
 cd backend
 cd ToDo.Api
@@ -52,7 +56,17 @@ dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Server=localhost;
 
 ---
 
-#### 2.2 Criar o banco de dados:
+#### 2.2 Criar o banco de dados e usuário PostgreSQL:
+
+Antes de atualizar o banco via EF Core, certifique-se de que o banco e o usuário existem:
+
+```sql
+-- Execute no psql ou pgAdmin:
+
+CREATE USER usuarioteste WITH PASSWORD 'q3*~K~41FGZs';
+CREATE DATABASE todo_db OWNER usuarioteste;
+GRANT ALL PRIVILEGES ON DATABASE todo_db TO usuarioteste;
+```
 
 ``` bash
 dotnet ef database update
