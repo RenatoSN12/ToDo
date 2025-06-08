@@ -12,12 +12,11 @@ import { useState } from "react";
 import { loginApi } from "../service/AuthService";
 import { useNavigate } from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
-import { SplitErrors } from "../utils/StringSpliter";
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import KeyOutlinedIcon from '@mui/icons-material/KeyOutlined';
-import type { AxiosError } from "axios";
 import { useAuth } from "../contexts/AuthContext";
 import LoginIcon from '@mui/icons-material/Login';
+import { handleError } from "../utils/ErrorHelpers";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -34,9 +33,7 @@ function LoginPage() {
       enqueueSnackbar("Login realizado com sucesso!", { variant: "success" });
       navigate("/home");
     } catch (err: unknown) {
-      const axiosErr = err as AxiosError<{ message: string }>;
-      const errors = SplitErrors(axiosErr.response?.data?.message);
-      errors.forEach((error) => enqueueSnackbar(error, { variant: "error" }));
+      handleError(err);
     }
   }
 
@@ -61,6 +58,7 @@ function LoginPage() {
         <Stack direction={"row"} alignItems={"center"} spacing={1} sx={{marginBottom:4}}>
           <LoginIcon/>
           <Typography
+            component="h1"
             fontWeight={700}
             variant="h5"
             letterSpacing={1.3}
@@ -83,8 +81,10 @@ function LoginPage() {
               type="email"
               autoComplete="email"
               fullWidth
+              required
               value={email}
               slotProps={{
+                htmlInput: {maxLength: 80},
                 input: {
                   startAdornment: (
                     <InputAdornment position="start">
@@ -98,10 +98,12 @@ function LoginPage() {
             <TextField
               label="Senha"
               type="password"
-              autoComplete="password"
+              autoComplete="current-password"
               fullWidth
+              required
               value={password}
               slotProps={{
+                htmlInput: {maxLength: 16},
                 input: {
                   startAdornment: (
                     <InputAdornment position="start">

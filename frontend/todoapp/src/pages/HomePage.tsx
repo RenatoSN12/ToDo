@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import type { TodoItem } from "../interfaces/TodoItem";
-import { Box, Button, Checkbox, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Checkbox,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { DesktopDatePicker } from "@mui/x-date-pickers";
 import Grid from "../components/Grid";
 import {
@@ -11,18 +18,17 @@ import {
   patchTodoItem,
 } from "../service/TodoItemService";
 import { enqueueSnackbar } from "notistack";
-import type { AxiosError } from "axios";
-import { SplitErrors } from "../utils/StringSpliter";
 import TodoItemDialog from "../components/TodoItemDialog";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ConfirmDialog from "../components/ConfirmDialog";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import { format } from "date-fns";
 import { safeDateFromString, toFullDate } from "../utils/DateHelpers";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { handleError } from "../utils/ErrorHelpers";
 
 function HomePage() {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
@@ -31,27 +37,24 @@ function HomePage() {
   const [date, setDate] = useState<Date | null>(new Date());
   const [todos, setTodos] = useState<TodoItem[]>([]);
 
-  const [todoBeingEdited, setTodoBeingEdited] = useState<Partial<TodoItem> | null>(null);
+  const [todoBeingEdited, setTodoBeingEdited] =
+    useState<Partial<TodoItem> | null>(null);
 
-  const [allItemsCompleted, setAllItemsCompleted] = useState(false)
+  const [allItemsCompleted, setAllItemsCompleted] = useState(false);
 
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   const navigate = useNavigate();
   const { logout } = useAuth();
 
-  useEffect(()=> {
-    if(todos.every(x => x.isCompleted)){
-      setAllItemsCompleted(true)
-    }else{
-      setAllItemsCompleted(false)
-    }
-  },[todos])
+  useEffect(() => {
+    setAllItemsCompleted(todos.every((x) => x.isCompleted));
+  }, [todos]);
 
   const onLogoutClicked = () => {
     logout();
     navigate("/register");
-  }
+  };
 
   const onDateChanged = (date: Date | null) => {
     setDate(date);
@@ -71,8 +74,8 @@ function HomePage() {
     const newTodo: Partial<TodoItem> = {
       title: "",
       description: "",
-      dueDate: format(new Date(), "yyyy-MM-dd") 
-    }
+      dueDate: format(new Date(), "yyyy-MM-dd"),
+    };
 
     setTodoBeingEdited(newTodo);
 
@@ -85,7 +88,7 @@ function HomePage() {
 
   const loadTodos = async () => {
     try {
-      const dateFormatted = format(date ?? new Date(),"yyyy-MM-dd")
+      const dateFormatted = format(date ?? new Date(), "yyyy-MM-dd");
       var result = await getTodoItemsByDate(dateFormatted);
       setTodos(result.data ?? []);
     } catch {
@@ -104,10 +107,8 @@ function HomePage() {
       setTodos((prevTodos) => prevTodos.filter((x) => x.id !== todoId));
 
       enqueueSnackbar(result.message, { variant: "success" });
-    } catch (err: any) {
-      const axiosErr = err as AxiosError<{ message: string }>;
-      const errors = SplitErrors(axiosErr.response?.data?.message);
-      errors.forEach((error) => enqueueSnackbar(error, { variant: "error" }));
+    } catch (err: unknown) {
+      handleError(err);
     }
   };
 
@@ -128,10 +129,8 @@ function HomePage() {
 
       setCompleteDialogOpen(false);
       enqueueSnackbar("Tarefa concluída com sucesso!", { variant: "success" });
-    } catch (err: any) {
-      const axiosErr = err as AxiosError<{ message: string }>;
-      const errors = SplitErrors(axiosErr.response?.data?.message);
-      errors.forEach((error) => enqueueSnackbar(error, { variant: "error" }));
+    } catch (err: unknown) {
+      handleError(err);
     }
   };
 
@@ -145,33 +144,38 @@ function HomePage() {
         const updatedTodo = result.data;
 
         const updatedDate = safeDateFromString(updatedTodo?.dueDate ?? "");
-        if (updatedDate.toLocaleDateString() !== date?.toLocaleDateString()){
-          setTodos((prevTodos) => prevTodos.filter((x)=> x.id !== updatedTodo?.id))
+        if (updatedDate.toLocaleDateString() !== date?.toLocaleDateString()) {
+          setTodos((prevTodos) =>
+            prevTodos.filter((x) => x.id !== updatedTodo?.id)
+          );
+          console.log("Passou aqqui 1");
           return;
         }
 
+        console.log("Passou aqui 2");
         setTodos((prevTodos) =>
           prevTodos.map((t) => (t.id === updatedTodo?.id ? updatedTodo : t))
         );
       } else {
         const result = await createTodoItem(todo);
         const newTodo = result.data;
-       
+
         if (!newTodo) return;
 
         const createdDate = safeDateFromString(newTodo.dueDate ?? "");
-        
-        if(createdDate.toLocaleDateString() === date?.toLocaleDateString() && result.data !== null){
+
+        if (
+          createdDate.toLocaleDateString() === date?.toLocaleDateString() &&
+          result.data !== null
+        ) {
           setTodos((prevTodos) => [...prevTodos, newTodo]);
         }
       }
 
       enqueueSnackbar(`Tarefa ${acao} com sucesso!`, { variant: "success" });
       setEditDialogOpen(false);
-    } catch (err: any) {
-      const axiosErr = err as AxiosError<{ message: string }>;
-      const errors = SplitErrors(axiosErr.response?.data?.message);
-      errors.forEach((error) => enqueueSnackbar(error, { variant: "error" }));
+    } catch (err: unknown) {
+      handleError(err);
     }
   };
 
@@ -187,30 +191,37 @@ function HomePage() {
           mb: 3,
         }}
       >
-        <Stack direction="column" alignItems="center" spacing={1} mb={{ xs: 4 }}>
+        <Stack
+          direction="column"
+          alignItems="center"
+          spacing={1}
+          mb={{ xs: 4 }}
+        >
           <Stack direction="row" alignItems="center" spacing={1}>
-          <EventNoteIcon fontSize="large" />
-          <Typography variant="h4" fontWeight={{ xs: 400, sm: 500 }}>
-            Tarefas do Dia
-          </Typography>
+            <EventNoteIcon fontSize="large" />
+            <Typography variant="h4" fontWeight={{ xs: 400, sm: 500 }}>
+              Tarefas do Dia
+            </Typography>
           </Stack>
           <Stack direction={"row"} alignItems={"center"}>
             <Typography>{toFullDate(date)}</Typography>
-            <Checkbox disabled checked={allItemsCompleted}></Checkbox>
+            <Tooltip title="Todas as tarefas do dia estão concluídas">
+              <Checkbox readOnly checked={allItemsCompleted} />
+            </Tooltip>
           </Stack>
         </Stack>
 
         <Stack
           direction={{ xs: "column", sm: "row" }}
-          spacing={{ xs: 3 }}
+          spacing={{ xs: 2, sm: 2, md: 3 }}
           sx={{ marginBottom: { xs: 3 } }}
         >
           <DesktopDatePicker
-            sx={{ bgcolor: "#ffffff" }}
+            sx={{ bgcolor: "#FFFFFF" }}
             label="Selecionar data"
             value={date}
             onChange={(newValue) => onDateChanged(newValue)}
-            slotProps={{ textField: { size: "small" } }}
+            slotProps={{ textField: { size: "small", variant: "outlined" } }}
           />
 
           <Button
@@ -225,30 +236,33 @@ function HomePage() {
             startIcon={<CheckCircleIcon />}
             onClick={onCompleteTodoItemsClicked}
           >
-            <Typography>Concluir Tarefas</Typography>
+            Concluir Tarefas
           </Button>
 
           <Button
-            startIcon={<AddCircleIcon/>}
+            startIcon={<AddCircleIcon />}
             variant="contained"
             onClick={onCreateClicked}
             sx={{
-               textTransform: "none",
-               px: 2, borderRadius: 2
+              textTransform: "none",
+              px: 2,
+              borderRadius: 2,
             }}
           >
-            <Typography>Nova Tarefa</Typography>
+            Nova Tarefa
           </Button>
           <Button
-            startIcon={<LogoutIcon/>}
+            startIcon={<LogoutIcon />}
             variant="outlined"
+            color="error"
             onClick={onLogoutClicked}
             sx={{
-               textTransform: "none",
-               px: 2, borderRadius: 2
+              textTransform: "none",
+              px: 2,
+              borderRadius: 2,
             }}
           >
-            <Typography>Sair</Typography>
+            Sair
           </Button>
         </Stack>
       </Box>

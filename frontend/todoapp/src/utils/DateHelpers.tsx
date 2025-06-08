@@ -20,11 +20,17 @@ export function safeDateFromString(input: string | null): Date {
   return new Date(year, month - 1, day);
 }
 
-export function formatDateBR(date: Date | null): string {
-  if (!date) return "";
-  return date.toLocaleDateString("pt-BR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
+// export function formatDateBR(date: Date | null): string {
+//   if (!date) return "";
+//   return date.toLocaleDateString("pt-BR", {
+//     day: "2-digit",
+//     month: "2-digit",
+//     year: "numeric",
+//   });
+// }
+
+export function stripTime(date: Date): Date {
+  const clean = new Date(date);
+  clean.setHours(0, 0, 0, 0);
+  return clean;
 }

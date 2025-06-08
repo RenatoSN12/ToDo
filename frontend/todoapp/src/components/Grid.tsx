@@ -18,7 +18,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ConfirmDialog from "./ConfirmDialog";
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
-import { formatDateBR, safeDateFromString } from "../utils/DateHelpers";
+import { safeDateFromString, stripTime } from "../utils/DateHelpers";
 import { format } from "date-fns";
 
 interface GridProps {
@@ -62,14 +62,12 @@ function Grid({ todos, onSelectedItemsChange, onEdit, onDelete }: GridProps) {
         mt: 4,
       }}
     >
-      <Paper sx={{ width: "80%", p: 2 }}>
+      <Paper sx={{ width: { xs: "90%", sm: "80%" }, p: 2 }}>
         <TableContainer>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell align="center">
-                  #
-                </TableCell>
+                <TableCell align="center">#</TableCell>
                 <TableCell align="center">Título</TableCell>
                 <TableCell align="center">Data</TableCell>
                 <TableCell align="center">Status</TableCell>
@@ -78,7 +76,7 @@ function Grid({ todos, onSelectedItemsChange, onEdit, onDelete }: GridProps) {
             </TableHead>
             <TableBody>
               {todos.map((todo) => (
-                <TableRow key={todo.title}>
+                <TableRow hover key={todo.id}>
                   <TableCell align="center" padding="checkbox">
                     <Checkbox
                       color="primary"
@@ -89,9 +87,13 @@ function Grid({ todos, onSelectedItemsChange, onEdit, onDelete }: GridProps) {
                   <TableCell align="center">{todo.title}</TableCell>
                   <TableCell align="center">
                     <Chip
-                      label={format(safeDateFromString(todo.dueDate), "dd/MM/yyyy")}
+                      label={format(
+                        safeDateFromString(todo.dueDate),
+                        "dd/MM/yyyy"
+                      )}
                       color={
-                        safeDateFromString(todo.dueDate) < new Date()
+                        stripTime(safeDateFromString(todo.dueDate)) <
+                        stripTime(new Date())
                           ? "error"
                           : "default"
                       }
@@ -136,7 +138,7 @@ function Grid({ todos, onSelectedItemsChange, onEdit, onDelete }: GridProps) {
               ))}
               {todos.length == 0 && (
                 <TableRow>
-                  <TableCell colSpan={4} align="center">
+                  <TableCell colSpan={5} align="center">
                     Nenhuma tarefa encontrada.
                   </TableCell>
                 </TableRow>

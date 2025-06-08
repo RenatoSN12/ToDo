@@ -9,7 +9,7 @@ using ToDo.Domain.Data.Repositories;
 namespace ToDo.Application.UseCases.Handlers.TodoItems;
 
 public class CreateTodoItemCommandHandler(
-    CreateTodoItemsValidator validator,
+    CreateTodoItemValidator validator,
     ITodoItemRepository repository,
     IUnitOfWork unitOfWork) : ICommandHandler<CreateTodoItemCommand>
 {

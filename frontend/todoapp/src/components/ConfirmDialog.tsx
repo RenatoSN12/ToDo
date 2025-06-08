@@ -11,6 +11,7 @@ interface ConfirmDialogProps {
 function ConfirmDialog({open,title,message,onCancel,onConfirm,}: ConfirmDialogProps) {
     return (
         <Dialog 
+            slotProps={{paper: {sx: {borderRadius: 4, padding: 1}} }}
             open={open}
             onClose={onCancel}>
             <DialogTitle>{title}</DialogTitle>
@@ -18,8 +19,8 @@ function ConfirmDialog({open,title,message,onCancel,onConfirm,}: ConfirmDialogPr
                 <DialogContentText>{message}</DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={onCancel}>Cancelar</Button>
-                <Button onClick={onConfirm} autoFocus>Confirmar</Button>
+                <Button variant="outlined" onClick={onCancel}>Cancelar</Button>
+                <Button variant="contained" onClick={onConfirm} autoFocus>Confirmar</Button>
             </DialogActions>
         </Dialog>
     );

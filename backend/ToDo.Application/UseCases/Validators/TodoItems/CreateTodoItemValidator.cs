@@ -3,9 +3,9 @@ using ToDo.Application.UseCases.Commands.TodoItems;
 
 namespace ToDo.Application.UseCases.Validators.TodoItems;
 
-public class CreateTodoItemsValidator : AbstractValidator<CreateTodoItemCommand>
+public class CreateTodoItemValidator : AbstractValidator<CreateTodoItemCommand>
 {
-    public CreateTodoItemsValidator()
+    public CreateTodoItemValidator()
     {
         RuleFor(x => x.Title)
             .NotEmpty().WithMessage("O título da tarefa é obrigatório.")

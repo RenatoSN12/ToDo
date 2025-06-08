@@ -2,6 +2,7 @@ using ToDo.Application.Common.Handlers;
 using ToDo.Application.Common.Results;
 using ToDo.Application.Mappers;
 using ToDo.Application.UseCases.Commands.TodoItems;
+using ToDo.Application.UseCases.Validators.TodoItems;
 using ToDo.Domain.Data;
 using ToDo.Domain.Data.Repositories;
 using ToDo.Domain.Entities;
@@ -10,11 +11,20 @@ namespace ToDo.Application.UseCases.Handlers.TodoItems;
 
 public class PatchTodoItemCommandHandler(
     ITodoItemRepository repository,
-    IUnitOfWork unitOfWork
+    IUnitOfWork unitOfWork,
+    PatchTodoItemValidator validator
 ) : ICommandHandler<PatchTodoItemCommand>
 {
     public async Task<Result> Handle(PatchTodoItemCommand command)
     {
+        var result = await validator.ValidateAsync(command);
+
+        if (!result.IsValid)
+        {
+            var errors = result.Errors.Select(x => x.ErrorMessage);
+            return new Result(400, string.Join(';', errors), null);
+        }
+        
         var todoItem = await repository.GetByIdAsync(command.Id, command.UserId);
         if (todoItem is null)
             return new Result(404, "Tarefa não encontrada no sistema.",null);

@@ -12,12 +12,11 @@ import { register } from "../service/AuthService";
 import { useState } from "react";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
-import { SplitErrors } from "../utils/StringSpliter";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import KeyOutlinedIcon from "@mui/icons-material/KeyOutlined";
-import type { AxiosError } from "axios";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import { handleError } from "../utils/ErrorHelpers";
 
 function RegisterPage() {
   const [name, setName] = useState("");
@@ -44,9 +43,7 @@ function RegisterPage() {
       });
       navigate("/login");
     } catch (err: unknown) {
-      const axiosErr = err as AxiosError<{ message: string }>;
-      const errors = SplitErrors(axiosErr.response?.data?.message);
-      errors.forEach((msg) => enqueueSnackbar(msg, { variant: "error" }));
+      handleError(err);
     }
   }
 
@@ -98,8 +95,10 @@ function RegisterPage() {
               type="text"
               autoComplete="name"
               fullWidth
+              required
               value={name}
               slotProps={{
+                htmlInput: {maxLength: 120},
                 input: {
                   startAdornment: (
                     <InputAdornment position="start">
@@ -115,8 +114,10 @@ function RegisterPage() {
               type="email"
               autoComplete="email"
               fullWidth
+              required
               value={email}
               slotProps={{
+                htmlInput: {maxLength: 80},
                 input: {
                   startAdornment: (
                     <InputAdornment position="start">
@@ -132,8 +133,10 @@ function RegisterPage() {
               type="password"
               autoComplete="new-password"
               fullWidth
+              required
               value={password}
               slotProps={{
+                htmlInput: {maxLength: 16},
                 input: {
                   startAdornment: (
                     <InputAdornment position="start">
@@ -147,9 +150,11 @@ function RegisterPage() {
             <TextField
               label="Senha (Confirmação)"
               type="password"
+              required
               fullWidth
               value={confirmPassword}
               slotProps={{
+                htmlInput: {maxLength: 16},
                 input: {
                   startAdornment: (
                     <InputAdornment position="start">

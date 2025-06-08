@@ -16,7 +16,7 @@ public static class DependencyInjection
 {
     public static void AddValidators(this IServiceCollection services)
     {
-        services.AddValidatorsFromAssemblyContaining<CreateTodoItemsValidator>();
+        services.AddValidatorsFromAssemblyContaining<CreateTodoItemValidator>();
         services.AddValidatorsFromAssemblyContaining<RegisterUserValidator>();
     }
 

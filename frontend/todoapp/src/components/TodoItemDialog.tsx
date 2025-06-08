@@ -50,6 +50,7 @@ function TodoItemDialog({
         paper: {
           sx: {
             borderRadius: 4,
+            minWidth: { xs: 300, sm: 500, md: 500, lg: 700, xl: 700 },
           },
         },
       }}
@@ -68,49 +69,51 @@ function TodoItemDialog({
           </Stack>
         </DialogTitle>
         <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            label="Título"
-            fullWidth
-            value={todo?.title ?? ""}
-            onChange={(e) =>
-              setTodo((prev) => ({ ...prev, title: e.target.value }))
-            }
-            required
-          />
-
-          <DesktopDatePicker
-            label="Data de Execução"
-            value={
-              todo?.dueDate ? safeDateFromString(todo.dueDate) : new Date()
-            }
-            onChange={(newDate) => {
-              if (newDate instanceof Date && !isNaN(newDate.getTime())) {
-                setTodo((prev) => ({
-                  ...prev!,
-                  dueDate: format(newDate, "yyyy-MM-dd"),
-                }));
+          <Stack padding={1} spacing={2}>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="Título"
+              fullWidth
+              value={todo?.title ?? ""}
+              onChange={(e) =>
+                setTodo((prev) => ({ ...prev, title: e.target.value }))
               }
-            }}
-            slotProps={{
-              textField: {
-                fullWidth: true,
-                margin: "dense",
-              },
-            }}
-          />
-          <TextField
-            multiline
-            rows={3}
-            margin="dense"
-            label="Descrição"
-            fullWidth
-            value={todo?.description ?? ""}
-            onChange={(e) =>
-              setTodo((prev) => ({ ...prev, description: e.target.value }))
-            }
-          />
+              required
+            />
+
+            <DesktopDatePicker
+              label="Data de Execução"
+              value={
+                todo?.dueDate ? safeDateFromString(todo.dueDate) : new Date()
+              }
+              onChange={(newDate) => {
+                if (newDate instanceof Date && !isNaN(newDate.getTime())) {
+                  setTodo((prev) => {
+                    if (!prev) return prev;
+                    return { ...prev, dueDate: format(newDate, "yyyy-MM-dd") };
+                  });
+                }
+              }}
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  margin: "dense",
+                },
+              }}
+            />
+            <TextField
+              multiline
+              rows={3}
+              margin="dense"
+              label="Descrição"
+              fullWidth
+              value={todo?.description ?? ""}
+              onChange={(e) =>
+                setTodo((prev) => ({ ...prev, description: e.target.value }))
+              }
+            />
+          </Stack>
         </DialogContent>
         <DialogActions>
           <Button variant="outlined" onClick={onClose}>
