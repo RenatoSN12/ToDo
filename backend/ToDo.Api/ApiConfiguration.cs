@@ -3,7 +3,7 @@ namespace ToDo.Api;
 public static class ApiConfiguration
 {
     public static string ConnectionString { get; set; } = string.Empty;
-
+    public static string CorsOrigins => "CorsOrigins";
     public static SecretsConfiguration Secrets { get; set; } = new();
     public class SecretsConfiguration
     {

@@ -1,3 +1,4 @@
+using ToDo.Api;
 using ToDo.Api.Extensions;
 using ToDo.Application;
 
@@ -30,7 +31,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("_allowSpecificOrigins");
+app.UseCors(ApiConfiguration.CorsOrigins);
 
 app.UseAuthentication();
 app.UseAuthorization();

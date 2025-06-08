@@ -9,6 +9,7 @@ public class LoginUserValidator : AbstractValidator<LoginUserCommand>
     {
         RuleFor(x=> x.EmailAddress)
             .NotEmpty().WithMessage("O e-mail é obrigatório.")
+            .MaximumLength(80).WithMessage("O e-mail deve possuir no máximo 80 caracteres.")
             .EmailAddress().WithMessage("O formato do e-mail informado é inválido.");
         
         RuleFor(x => x.Password)

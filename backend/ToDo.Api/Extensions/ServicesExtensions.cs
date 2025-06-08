@@ -8,11 +8,9 @@ public static class ServicesExtensions
 {
     public static void ConfigureCors(this IServiceCollection services)
     {
-        const string allowSpecificOrigins = "_allowSpecificOrigins";
-        
         services.AddCors(options =>
         {
-            options.AddPolicy(name: allowSpecificOrigins,
+            options.AddPolicy(name: ApiConfiguration.CorsOrigins,
                 policy  =>
                 {
                     policy.WithOrigins("http://localhost:5173", "http://localhost:5052")
